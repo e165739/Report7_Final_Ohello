@@ -2,7 +2,7 @@ package jp.ac.uryukyu.ie.e165739;
 import java.util.Scanner;
 
 public class Solver {
-    private static final int num=10,X=0,Y=1,EMPTY=0,BLACK=1,WHITE=2,DRAW=3,WALL=9,PASS=100,EXIT=200;
+    private static final int num=10,X=0,Y=1,EMPTY=0,BLACK=1,WHITE=2,DRAW=3,WALL=9;
     private static final int[][] dir = {{-1,-1}, { 0,-1}, { 1,-1}, { 1, 0}, { 1, 1}, { 0, 1}, {-1, 1}, {-1, 0}};
     private static int[][] board = new int[num][num];
     private static int x,y,turn=BLACK,victory ;
@@ -196,12 +196,12 @@ public class Solver {
             if(s.length==1){
                 // 「 pass 」と打ち込まれた場合
                 if(s[0].equals("pass")){
-                    ret = PASS ;
+                    ret = 100 ;
                     break;
                 }
                 // 「 exit 」と打ち込まれた場合
                 else if(s[0].equals("exit")){
-                    ret = EXIT ;
+                    ret = 200 ;
                     break;
                 }
             }
