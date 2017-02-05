@@ -8,6 +8,7 @@ public class Solver {
     private static int x,y,turn=BLACK,victory ;
     private static final String RANGE="[1-8]";
 
+    // 盤の黒、白、壁の初期設定
     public static void init(){
         for(int i=0;i<num;i++){
             board[0][i] = board[9][i] = WALL;
@@ -19,7 +20,9 @@ public class Solver {
         board[4][5] = board[5][4] = BLACK;
     }
 
+    // 盤の表示
     public static void show(){
+        // 外枠の番号づけ
         System.out.print("\n     ");
         for(int i=1;i<num-1;i++){
             System.out.print(i);
@@ -27,6 +30,7 @@ public class Solver {
                 System.out.print(" ");
             }
         }
+        // 黒、白、壁、空白の判定・マークづけ
         for(int i=0;i<num;i++){
             if(0<i && i<num-1){
                 System.out.printf("\n %d ",i);
@@ -34,6 +38,7 @@ public class Solver {
                 System.out.print("\n   ");
             }
             for(int j=0;j<num;j++){
+                // マークづけ
                 switch(board[i][j]){
                     case WALL  : {
                         System.out.print("■");
@@ -59,6 +64,7 @@ public class Solver {
         System.out.print("\n--------------------------------------------------------------------\n");
     }
 
+    // 順番の表示
     public static void black_white_turn(){
         if(turn==BLACK){
             System.out.print("\n-----黒番-----\n\n");
@@ -66,23 +72,25 @@ public class Solver {
             System.out.print("\n-----白番-----\n\n");
         }
     }
+
+    // 順番を入れ替える
     public static void shift(){
         turn = 3 - turn;
     }
 
+    // 黒と白の個数を数える
     public static boolean judge(){
         int black = 0, white = 0;
-
         for(int i=1;i<num-1;i++){
             for(int j=1;j<num-1;j++){
                 if(board[i][j]==BLACK){
                     black++;
-                } else if(board[i][j]==WHITE){
+                }else if(board[i][j]==WHITE){
                     white++;
                 }
             }
         }
-
+        // victoryを決定させる
         if(black+white==8*8){
             if(black<white){
                 victory = WHITE;
@@ -96,12 +104,15 @@ public class Solver {
         return false;
     }
 
+
+
+    // 以下3つのメソッドはそれぞれレポートで説明
     public static boolean update(){
         boolean ret;
         if(chk_cell()){
             flip();
             ret = true;
-        } else {
+        }else{
             ret = false;
         }
         return ret;
@@ -123,7 +134,7 @@ public class Solver {
                     if(board[k][j]==turn){
                         result = true;
                         break out;
-                    } else if(board[k][j]== 3 - turn){
+                    }else if(board[k][j]== 3 - turn){
                         continue;
                     }
                     break;
@@ -137,17 +148,22 @@ public class Solver {
         board[y][x] = turn;
         for(int i=0;i<dir.length;i++){
             int j=x,k=y;
-            j += dir[i][X];k += dir[i][Y];
+            j += dir[i][X];
+            k += dir[i][Y];
             if(board[k][j] == 3 - turn){
                 out:while(true){
-                    j += dir[i][X];k += dir[i][Y];
+                    j += dir[i][X];
+                    k += dir[i][Y];
                     if(board[k][j]==turn){
                         while(true){
-                            j -= dir[i][X]; k -= dir[i][Y];
-                            if(board[k][j]==turn){break out;}
+                            j -= dir[i][X];
+                            k -= dir[i][Y];
+                            if(board[k][j]==turn){
+                                break out;
+                            }
                             board[k][j] = turn;
                         }
-                    } else if(board[k][j]== 3 - turn){
+                    }else if(board[k][j]== 3 - turn){
                         continue;
                     }
                     break;
@@ -156,6 +172,9 @@ public class Solver {
         }
     }
 
+
+
+    // 勝者の表示
     public static void show_result(){
         if (victory == DRAW) {
             System.out.println("\n\nこの勝負　引き分け！\n\n");
@@ -164,30 +183,38 @@ public class Solver {
         }else{
             System.out.println("\n\nこの勝負　白　の勝ち！\n\n");
         }
-        show();
+        show(); // 最終的な盤面を表示
     }
 
+    // プレイヤーが文字を入力
     public static Scanner sc = new Scanner(System.in);
-
     public static int input(){
         int ret = 0;
         while(true){
             String[] s = sc.nextLine().split("\\s");
+            // 打ち込まれた入力が1文字だった場合（例： pass , 5  etc...）
             if(s.length==1){
+                // 「 pass 」と打ち込まれた場合
                 if(s[0].equals("pass")){
                     ret = PASS ;
                     break;
-                }else if(s[0].equals("exit")){
+                }
+                // 「 exit 」と打ち込まれた場合
+                else if(s[0].equals("exit")){
                     ret = EXIT ;
                     break;
                 }
-            }else if(s.length==2){
+            }
+            // 打ち込まれた入力が2文字だった場合（例： 7 2 , give up  etc...）
+            else if(s.length==2){
+                // 「 s t 」と打ち込まれた場合（s,tはそれぞれ1から8までの数字とする）
                 if(s[0].matches(RANGE) && s[1].matches(RANGE)){
                     y = Integer.parseInt(s[0]);
                     x = Integer.parseInt(s[1]);
                     break;
                 }
             }
+            // 例外だった場合に表示
             System.out.println("駒を置くことができませんでしたので、もう一度入力してください。");
             System.out.print(">>>>> ");
 
