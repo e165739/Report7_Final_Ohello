@@ -20,6 +20,9 @@ public class Main {
             System.out.print("駒を入力>>>>> ");
 
             switch (solver.input()) {
+
+                // PASSとEXITを今回は定数式で返すようにした
+
                 // 「 pass 」と入力されたらターンを飛ばす
                 case 100 : {
                     solver.shift();
