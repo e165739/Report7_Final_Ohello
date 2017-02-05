@@ -21,12 +21,12 @@ public class Main {
 
             switch (solver.input()) {
                 // 「 pass 」と入力されたらターンを飛ばす
-                case PASS : {
+                case 100 : {
                     solver.shift();
                     continue;
                 }
                 // 「 exit 」と入力されたらゲームを強制終了させる
-                case EXIT : {
+                case 200 : {
                     System.out.println("EXITされました。ゲームを終了します。");
                     break out; // 実装終了
                 }
